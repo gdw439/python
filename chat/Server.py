@@ -92,10 +92,11 @@ class Link:
             if name in self.db.namekey:
                 sock.send('$$USERAT'.encode('utf-8'))
                 print('该昵称已存在')
+                return False
             else:
-                userdata = (1, name, keyword, 'None')
+                userdata = (name, keyword, 'None')
                 print('数据库写入……')
-                self.db.insert_datarow(tuple(userdata))
+                self.db.insert_datarow(userdata)
                 print('数据库写入成功')
 
         # 上线处理
@@ -154,14 +155,13 @@ class Database:
         self.cursor.execute('SELECT * FROM users')
         results = self.cursor.fetchall()
         self.db.commit()
-        self.cursor.execute('use chat')
         return results
 
     def insert_datarow(self, datalist):
         sql = 'insert into users values(1,"%s","%s","%s")'
         self.cursor.execute(sql % datalist)
         self.db.commit()
-        slef.namekey.append(datalist[0])
+        self.namekey[datalist[0]] = datalist[1]
 
     def regrenew(self):
         listdata = self.get_table_data()

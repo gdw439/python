@@ -1,6 +1,5 @@
 import sys
 import time
-import random
 import socket
 import pymysql
 import threading
@@ -219,6 +218,10 @@ class Chat:
             if self.registeruser(name, keyword) == True:
                 self.myname = name
                 print('登录成功')
+                self.login.close()
+                self.box.show()
+                self.box.sendbtn.clicked.connect(self.emitmessage)
+                self.box.flushlist(self.user_list)
         else:
             print('输入格式错误')
 
